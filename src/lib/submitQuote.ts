@@ -7,30 +7,48 @@ export interface QuoteFormData {
   description: string;
   contactMethod: 'email' | 'phone';
   consent: boolean;
+  website: string; // honeypot — must stay empty
 }
 
 export interface QuoteResult {
   success: boolean;
+  demoMode?: boolean;
   message: string;
 }
 
 /**
- * Demo submission handler.
+ * Submits the quote form data to the server-side /api/submit-quote endpoint.
  *
- * This function simulates a network request with a short delay and always
- * succeeds. It does NOT transmit, store, or forward any data. Replace the
- * body of this function with a call to a secure server-side endpoint when
- * connecting a real backend (e.g., Make.com webhook, Google Sheets API, or
- * a custom API that protects credentials server-side).
+ * The server validates all fields, checks a honeypot field for spam, and
+ * sends a notification email via Resend. The Resend API key is never
+ * exposed to the browser — it lives only in the Vercel environment.
+ *
+ * When RESEND_API_KEY is not configured server-side, the endpoint returns
+ * a controlled demo-mode response instead of sending an email.
  */
 export async function submitQuote(
-  _data: QuoteFormData
+  data: QuoteFormData
 ): Promise<QuoteResult> {
-  await new Promise((resolve) => setTimeout(resolve, 1200));
+  const response = await fetch('/api/submit-quote', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+
+  const result = await response.json().catch(() => ({
+    error: 'Unexpected response from the server.',
+  }));
+
+  if (!response.ok) {
+    return {
+      success: false,
+      message: result.error || 'Something went wrong. Please try again.',
+    };
+  }
 
   return {
-    success: true,
-    message:
-      'Your quote request has been received in demo mode. No data was transmitted or stored. Replace the demo handler with a secure endpoint to enable real submissions.',
+    success: result.success ?? true,
+    demoMode: result.demoMode,
+    message: result.message || 'Your quote request has been submitted.',
   };
 }

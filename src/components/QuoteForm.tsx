@@ -49,10 +49,12 @@ export default function QuoteForm() {
     description: '',
     contactMethod: 'email',
     consent: false,
+    website: '',
   });
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<Status>('idle');
   const [submitError, setSubmitError] = useState('');
+  const [demoMode, setDemoMode] = useState(false);
   const serviceSelectRef = useRef<HTMLSelectElement>(null);
 
   // Preselect service from URL hash or data-service attribute click
@@ -99,6 +101,7 @@ export default function QuoteForm() {
     try {
       const result = await submitQuote(data);
       if (result.success) {
+        setDemoMode(result.demoMode ?? false);
         setStatus('success');
       } else {
         setStatus('error');
@@ -120,10 +123,12 @@ export default function QuoteForm() {
       description: '',
       contactMethod: 'email',
       consent: false,
+      website: '',
     });
     setErrors({});
     setStatus('idle');
     setSubmitError('');
+    setDemoMode(false);
   };
 
   if (status === 'success') {
@@ -135,9 +140,9 @@ export default function QuoteForm() {
           </div>
           <h3 className="mt-5 text-2xl font-bold text-navy">Request Received</h3>
           <p className="mt-3 max-w-md text-navy-400">
-            Your quote request has been processed in demo mode. No data was transmitted or
-            stored. This is not a confirmed booking — in a live setup, the business would
-            follow up to discuss next steps.
+            {demoMode
+              ? 'The form submitted successfully, but the email service is not yet configured. No notification email was sent. This is not a confirmed booking.'
+              : 'Your quote request has been submitted and a notification email has been sent. This is not a confirmed booking — the business will follow up to discuss next steps. Email delivery is not guaranteed solely by acceptance of this request.'}
           </p>
           <div className="mt-6 rounded-xl bg-gray-50 p-4 text-left">
             <p className="text-sm text-navy-400">
@@ -392,6 +397,19 @@ export default function QuoteForm() {
           )}
         </div>
 
+        {/* Honeypot — hidden from humans, catches bots */}
+        <div aria-hidden="true" className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden">
+          <label htmlFor="website">Website (leave empty)</label>
+          <input
+            id="website"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            value={data.website}
+            onChange={(e) => update('website', e.target.value)}
+          />
+        </div>
+
         {/* Submit */}
         <button
           type="submit"
@@ -413,7 +431,7 @@ export default function QuoteForm() {
 
         <p className="text-center text-xs text-gray-400">
           Submitting this form is a request for a callback, not a confirmed appointment.
-          Demo mode — no data is transmitted or stored.
+          Portfolio demonstration — fictional business and contact details.
         </p>
       </form>
     </div>

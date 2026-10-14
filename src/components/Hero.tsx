@@ -1,5 +1,5 @@
 import { MessageSquare, ClipboardList, Home } from 'lucide-react';
-import { HERO_IMAGE, BUSINESS } from '@/lib/constants';
+import { HERO_IMAGE, HERO_IMAGE_ALT, BUSINESS } from '@/lib/constants';
 
 const REASSURANCE = [
   { icon: MessageSquare, text: 'Clear Communication' },
@@ -72,8 +72,8 @@ export default function Hero() {
             <div className="relative overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/10">
               <img
                 src={HERO_IMAGE}
-                alt="Plumber installing pipes under a sink, performing residential plumbing work"
-                className="h-72 w-full object-cover sm:h-96 lg:h-[480px]"
+                alt={HERO_IMAGE_ALT}
+                className="h-72 w-full object-cover object-center sm:h-96 lg:h-[480px]"
                 loading="eager"
               />
               {/* Overlay card */}

@@ -115,7 +115,9 @@ export const FAQ_ITEMS: { question: string; answer: string }[] = [
 ];
 
 export const HERO_IMAGE =
-  'https://images.pexels.com/photos/6419128/pexels-photo-6419128.jpeg?auto=compress&cs=tinysrgb&h=650&w=940';
+  'https://images.pexels.com/photos/13821194/pexels-photo-13821194.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800';
+export const HERO_IMAGE_ALT =
+  'A smiling professional tradesperson in work uniform standing beside a white service van, holding tools, in a residential setting';
 
 export const WHY_IMAGE =
-  'https://images.pexels.com/photos/7937299/pexels-photo-7937299.jpeg?auto=compress&cs=tinysrgb&h=650&w=940';
+  'https://images.pexels.com/photos/6419128/pexels-photo-6419128.jpeg?auto=compress&cs=tinysrgb&h=650&w=940';

@@ -4,7 +4,7 @@ const STEPS = [
   {
     number: 1,
     icon: ClipboardList,
-    title: 'Tell Us What&apos;s Wrong',
+    title: 'Tell Us What\u2019s Wrong',
     description:
       'Open the quote form and describe the plumbing issue you are experiencing — what happened, when it started, and where it is in your home.',
   },
@@ -58,10 +58,7 @@ export default function HowItWorks() {
                 <span className="mt-4 text-xs font-bold uppercase tracking-wider text-accent">
                   Step {step.number}
                 </span>
-                <h3
-                  className="mt-2 text-lg font-semibold"
-                  dangerouslySetInnerHTML={{ __html: step.title }}
-                />
+                <h3 className="mt-2 text-lg font-semibold">{step.title}</h3>
                 <p className="mt-3 max-w-xs text-sm leading-relaxed text-navy-100">
                   {step.description}
                 </p>

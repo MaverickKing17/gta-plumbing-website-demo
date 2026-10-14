@@ -24,9 +24,9 @@ export default function Hero() {
       />
 
       <div className="relative mx-auto max-w-7xl px-4 py-16 lg:py-24">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
+        <div className="grid items-center gap-10 lg:grid-cols-5 lg:gap-12">
           {/* Left column */}
-          <div className="animate-slide-up">
+          <div className="animate-slide-up lg:col-span-2">
             <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-accent">
               Residential Plumbing · Toronto &amp; GTA
             </p>
@@ -68,12 +68,12 @@ export default function Hero() {
           </div>
 
           {/* Right column - hero image with overlay card */}
-          <div className="relative animate-fade-in">
+          <div className="relative animate-fade-in lg:col-span-3">
             <div className="relative overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/10">
               <img
                 src={HERO_IMAGE}
                 alt={HERO_IMAGE_ALT}
-                className="h-72 w-full object-cover object-center sm:h-96 lg:h-[480px]"
+                className="h-80 w-full object-cover object-[center_30%] sm:h-[420px] lg:h-[520px]"
                 loading="eager"
               />
               {/* Overlay card */}

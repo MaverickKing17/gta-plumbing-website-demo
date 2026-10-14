@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, type FormEvent } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import {
   CheckCircle2,
   AlertCircle,
@@ -6,7 +6,7 @@ import {
   Send,
   RotateCcw,
 } from 'lucide-react';
-import { SERVICES, BUSINESS } from '@/lib/constants';
+import { SERVICES } from '@/lib/constants';
 import { submitQuote, type QuoteFormData } from '@/lib/submitQuote';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
@@ -55,7 +55,6 @@ export default function QuoteForm() {
   const [status, setStatus] = useState<Status>('idle');
   const [submitError, setSubmitError] = useState('');
   const [demoMode, setDemoMode] = useState(false);
-  const serviceSelectRef = useRef<HTMLSelectElement>(null);
 
   // Preselect service from URL hash or data-service attribute click
   useEffect(() => {
@@ -278,7 +277,6 @@ export default function QuoteForm() {
           </label>
           <select
             id="service"
-            ref={serviceSelectRef}
             value={data.service}
             onChange={(e) => update('service', e.target.value)}
             aria-invalid={!!errors.service}

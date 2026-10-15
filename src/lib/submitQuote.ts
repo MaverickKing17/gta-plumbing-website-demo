@@ -35,6 +35,15 @@ export async function submitQuote(
     body: JSON.stringify(data),
   });
 
+  const contentType = response.headers.get('content-type') || '';
+  if (!contentType.includes('application/json')) {
+    return {
+      success: false,
+      message:
+        'The server returned an unexpected response. This may happen in a preview environment where the backend is not available.',
+    };
+  }
+
   const result = await response.json().catch(() => ({
     error: 'Unexpected response from the server.',
   }));

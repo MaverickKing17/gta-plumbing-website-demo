@@ -202,6 +202,12 @@ export default async function handler(
   const fromEmail = process.env.RESEND_FROM_EMAIL;
 
   if (!apiKey || !recipientEmail || !fromEmail) {
+    const missing = [
+      !apiKey && 'RESEND_API_KEY',
+      !recipientEmail && 'QUOTE_RECIPIENT_EMAIL',
+      !fromEmail && 'RESEND_FROM_EMAIL',
+    ].filter(Boolean);
+    console.log('[submit-quote] Demo mode — missing env vars:', missing.join(', '));
     res.status(200).json({
       success: true,
       demoMode: true,
@@ -239,12 +245,17 @@ export default async function handler(
 
     if (!resendResponse.ok) {
       const errorText = await resendResponse.text();
-      console.error('Resend API error:', resendResponse.status, errorText);
+      console.error('[submit-quote] Resend API error:', {
+        status: resendResponse.status,
+        body: errorText,
+      });
       res.status(502).json({
         error: 'The email service could not process the request. Please try again later.',
       });
       return;
     }
+
+    console.log('[submit-quote] Email sent successfully for service:', payload.service);
 
     res.status(200).json({
       success: true,
@@ -253,7 +264,7 @@ export default async function handler(
         'Your quote request has been submitted. This is not a confirmed booking — the business will follow up to discuss next steps.',
     });
   } catch (err) {
-    console.error('Resend request failed:', err);
+    console.error('[submit-quote] Resend fetch failed:', err instanceof Error ? err.message : String(err));
     res.status(502).json({
       error: 'Unable to connect to the email service. Please try again later.',
     });
